@@ -20,6 +20,7 @@
   --radius: 6px;
   --font: "Helvetica Neue", Arial, system-ui, sans-serif;
   --font-cond: "Arial Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -51,7 +52,7 @@ img { max-width: 100%; display: block; }
 .brand { text-decoration: none; font: italic 800 20px/1 var(--font-cond); letter-spacing: .02em; white-space: nowrap; }
 .brand b { font-weight: 900; }
 .search { flex: 1; display: flex; max-width: 640px; margin-left: auto; background: #fff; border-radius: 4px; overflow: hidden; }
-.search input { flex: 1; border: 0; color: #1b1b1b; background: #fff; padding: 10px 12px; font: inherit; min-width: 0; outline: none; }
+.search input { -webkit-appearance: none; appearance: none; border-radius: 0; flex: 1; border: 0; color: #1b1b1b; background: #fff; padding: 10px 12px; font: inherit; min-width: 0; outline: none; }
 .search button { border: 0; background: var(--night); color: #fff; padding: 0 14px; display: grid; place-items: center; }
 .strip { background: var(--night); color: #fff; font-size: 13px; text-align: center; padding: 7px 16px; }
 .strip:empty { display: none; }

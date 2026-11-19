@@ -79,3 +79,11 @@ test('sale calendar dates', () => {
   assert.equal(ev.easter, '2027-03-28');
   assert.equal(ev.eofy, '2027-06-30');
 });
+
+test('browsing a category never shows other items from a combo pack', () => {
+  // B3 (tent + panel) is listed under the panel's category: only the panel may appear.
+  const items = itemsFromProducts([products.B3], products, index, { categoryIds: new Set([10]) });
+  assert.deepEqual(items, ['PANEL']);
+  const none = itemsFromProducts([products.B3], products, index, { categoryIds: new Set([99]) });
+  assert.deepEqual(none, []);
+});
