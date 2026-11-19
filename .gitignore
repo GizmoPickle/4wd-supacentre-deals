@@ -1,0 +1,5 @@
+data/catalog.json
+data/*.tmp
+dist-site/
+dist-static/
+node_modules/

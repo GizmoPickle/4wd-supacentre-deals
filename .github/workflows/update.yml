@@ -1,0 +1,62 @@
+# Checks prices every 6 hours, saves the price history to the repo, and
+# publishes the site to GitHub Pages. Also runs on every push to main and can be
+# run by hand (Actions tab → "Update prices and publish" → Run workflow).
+name: Update prices and publish
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit the price history
+  pages: write      # publish the site
+  id-token: write
+
+concurrency:
+  group: update-prices
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test
+        run: npm test
+
+      - name: Check prices
+        run: node crawl.js
+
+      - name: Save price history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.json data/menu.json
+          if git commit -m "Price check $(date -u +%Y-%m-%dT%H:%MZ)"; then
+            git pull --rebase
+            git push
+          fi
+
+      - name: Build site
+        run: node build-static.js
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

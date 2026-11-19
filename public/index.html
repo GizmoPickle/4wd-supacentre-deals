@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4WD Deal Finder</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23D7000E'/%3E%3Ctext x='16' y='22' font-size='16' font-family='Arial' font-weight='700' fill='white' text-anchor='middle'%3E$%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="menu-btn" id="menuBtn" aria-label="Shop by category" aria-expanded="false">
+        <span class="burger"><i></i><i></i><i></i></span><span class="menu-label">Menu</span>
+      </button>
+      <button class="back-btn" id="backBtn" hidden aria-label="Back">‹</button>
+      <a class="brand" href="#/">4WD <b>DEAL FINDER</b></a>
+      <form class="search" id="searchForm" role="search">
+        <input id="searchInput" type="search" placeholder="Search e.g. solar panel, fridge, swag…" autocomplete="off" aria-label="Search products">
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </header>
+  <div class="strip" id="strip"></div>
+
+  <nav class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <span>Shop by category</span>
+      <button id="drawerClose" aria-label="Close menu">×</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </nav>
+  <div class="scrim" id="scrim"></div>
+
+  <main id="app" class="wrap"></main>
+
+  <footer class="foot wrap">
+    Unofficial price tracker. Prices are read from the store's public catalogue; always confirm on the store before buying.
+    <span id="footStatus"></span>
+    <button id="refreshBtn" class="linkish">Check prices now</button>
+  </footer>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

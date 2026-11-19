@@ -1,0 +1,17 @@
+{
+  "name": "4wd-deals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cheapest-option finder and price tracker for 4WD Supacentre",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "crawl": "node crawl.js",
+    "build": "node build-static.js",
+    "build:embedded": "node build-static.js --embedded",
+    "test": "node --test test/*.test.js"
+  }
+}
