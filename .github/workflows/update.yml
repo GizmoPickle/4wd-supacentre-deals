@@ -27,7 +27,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
+      # Always start from the latest main, even when re-running an older run,
+      # so the price history being appended to is the newest copy.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-node@v4
         with:

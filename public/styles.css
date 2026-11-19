@@ -49,8 +49,12 @@ img { max-width: 100%; display: block; }
 .menu-btn { background: none; border: 0; color: #fff; display: flex; align-items: center; gap: 8px; padding: 6px 4px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 13px; }
 .burger { display: grid; gap: 4px; }
 .burger i { display: block; width: 22px; height: 2.5px; background: #fff; border-radius: 2px; }
-.brand { text-decoration: none; font: italic 800 20px/1 var(--font-cond); letter-spacing: .02em; white-space: nowrap; }
-.brand b { font-weight: 900; }
+.brand { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; white-space: nowrap; line-height: 1; }
+.brand-word { font: italic 900 25px/1 "Arial Black", "Helvetica Neue", Arial, sans-serif; letter-spacing: .02em; color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,.25); }
+.brand-mark { width: 50px; height: 41px; margin: -6px 0; filter: drop-shadow(2px 2px 0 rgba(0,0,0,.25)); transition: transform .2s; }
+.brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); }
+.brand:focus-visible { outline: 3px solid #fff; outline-offset: 4px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .brand-mark { transition: none; } }
 .search { flex: 1; display: flex; max-width: 640px; margin-left: auto; background: #fff; border-radius: 4px; overflow: hidden; }
 .search input { -webkit-appearance: none; appearance: none; border-radius: 0; flex: 1; border: 0; color: #1b1b1b; background: #fff; padding: 10px 12px; font: inherit; min-width: 0; outline: none; }
 .search button { border: 0; background: var(--night); color: #fff; padding: 0 14px; display: grid; place-items: center; }

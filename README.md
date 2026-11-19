@@ -1,4 +1,6 @@
-# 4WD Deal Finder
+# Rig 4 Less
+
+![Rig 4 Less](public/logo.svg)
 
 An unofficial reskin of the 4WD Supacentre catalogue that answers one question
 for every item: **what's the cheapest deal on it, and should I buy now or wait?**

@@ -86,7 +86,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`4WD deal finder on http://localhost:${PORT}  (re-crawls every ${CRAWL_HOURS}h)`);
+  console.log(`Rig 4 Less on http://localhost:${PORT}  (re-crawls every ${CRAWL_HOURS}h)`);
   crawlIfStale();
   setInterval(crawlIfStale, 15 * 60e3).unref();
 });

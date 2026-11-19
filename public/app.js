@@ -183,7 +183,7 @@ function bindSort(base, params) {
 // ---- views -----------------------------------------------------------------
 async function homeView() {
   const h = await api('highlights');
-  document.title = '4WD Deal Finder';
+  document.title = 'Rig 4 Less';
   app.innerHTML = `
     <section class="hero">
       <div><div class="big">${h.stealCount.toLocaleString()}</div><p>items have a deal below their regular price right now</p></div>
@@ -200,7 +200,7 @@ async function searchView(params) {
   const q = params.get('q') ?? '';
   const sort = params.get('sort') ?? 'relevance';
   $('#searchInput').value = q;
-  document.title = `${q} · 4WD Deal Finder`;
+  document.title = `${q} · Rig 4 Less`;
   app.innerHTML = `<div class="loading">Searching for “${esc(q)}”…</div>`;
   const r = await api(`search?q=${encodeURIComponent(q)}&sort=${sort}`);
   const steals = r.items.filter((i) => i.saving >= 1).length;
@@ -219,7 +219,7 @@ async function categoryView(id, params) {
   const sort = params.get('sort') ?? 'saving';
   app.innerHTML = `<div class="loading">Loading…</div>`;
   const r = await api(`category/${id}?sort=${sort}`);
-  document.title = `${r.name} · 4WD Deal Finder`;
+  document.title = `${r.name} · Rig 4 Less`;
   app.innerHTML = `
     <div class="crumbs"><a href="#/">Home</a>${r.trail.map((t) => ` › <a href="#/cat/${t.id}">${esc(t.name)}</a>`).join('')}</div>
     <h1>${esc(r.name)}</h1>
@@ -287,7 +287,7 @@ async function itemView(sku) {
   app.innerHTML = `<div class="loading">Loading…</div>`;
   const myRoute = currentRoute();
   const d = await api(`item/${encodeURIComponent(sku)}`);
-  document.title = `${shortName(d.name)} · 4WD Deal Finder`;
+  document.title = `${shortName(d.name)} · Rig 4 Less`;
   const a = d.advice;
   const s = a.stats;
   const best = d.ways.find((w) => w.inStock) ?? d.ways[0];

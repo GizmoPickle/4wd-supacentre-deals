@@ -17,7 +17,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'lib'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'data'), { recursive: true });
 
-for (const f of ['app.js', 'styles.css']) fs.copyFileSync(path.join(ROOT, 'public', f), path.join(OUT, f));
+for (const f of ['app.js', 'styles.css', 'favicon.svg', 'logo.svg', 'logo-mark.svg']) fs.copyFileSync(path.join(ROOT, 'public', f), path.join(OUT, f));
 // Per-item photos/specs, fetched by the item page on demand.
 const detailsDir = path.join(DATA_DIR, 'details');
 if (fs.existsSync(detailsDir)) fs.cpSync(detailsDir, path.join(OUT, 'data', 'details'), { recursive: true });
@@ -53,7 +53,7 @@ let page = src
 if (EMBEDDED) {
   // The claude.ai host wraps the page in its own document.
   const body = page.slice(page.indexOf('<body>') + 6, page.indexOf('</body>'));
-  page = `<title>4WD Deal Finder</title>
+  page = `<title>Rig 4 Less</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="styles.css">
 <style>body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 31; background: #d7000e; }</style>
@@ -61,9 +61,9 @@ ${body.trim()}
 `;
 } else {
   const desc = 'Find the cheapest way to buy any 4WD Supacentre item, on its own or inside a bundle, with price history and buy-now-or-wait advice.';
-  page = page.replace('<title>4WD Deal Finder</title>', `<title>4WD Deal Finder</title>
+  page = page.replace('<title>Rig 4 Less</title>', `<title>Rig 4 Less</title>
   <meta name="description" content="${desc}">
-  <meta property="og:title" content="4WD Deal Finder">
+  <meta property="og:title" content="Rig 4 Less">
   <meta property="og:description" content="${desc}">
   <meta name="theme-color" content="#d7000e">`);
   fs.writeFileSync(path.join(OUT, '.nojekyll'), ''); // serve files as-is on GitHub Pages
