@@ -17,7 +17,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(path.join(OUT, 'lib'), { recursive: true });
 fs.mkdirSync(path.join(OUT, 'data'), { recursive: true });
 
-for (const f of ['app.js', 'styles.css', 'favicon.svg', 'logo.svg', 'logo-mark.svg']) fs.copyFileSync(path.join(ROOT, 'public', f), path.join(OUT, f));
+for (const f of ['app.js', 'styles.css', 'favicon.svg', 'logo.svg', 'logo-header.svg', 'apple-touch-icon.png']) fs.copyFileSync(path.join(ROOT, 'public', f), path.join(OUT, f));
 // Per-item photos/specs, fetched by the item page on demand.
 const detailsDir = path.join(DATA_DIR, 'details');
 if (fs.existsSync(detailsDir)) fs.cpSync(detailsDir, path.join(OUT, 'data', 'details'), { recursive: true });
