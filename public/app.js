@@ -292,6 +292,17 @@ async function itemView(sku) {
   const s = a.stats;
   const best = d.ways.find((w) => w.inStock) ?? d.ways[0];
   const alone = d.ways.find((w) => w.kind === 'alone');
+  const others = d.ways.filter((w) => w !== best);
+  const saving = best && alone && best !== alone && alone.price > best.price ? alone.price - best.price : 0;
+  const bestBox = best ? `
+        <div class="panel best-box">
+          <div class="k">Cheapest deal</div>
+          <div class="price-row"><span class="price big-price">${money(best.price)}</span>${saving >= 1 ? `<span class="strike">${money(alone.price)}</span><span class="badge-save inline">Save ${money(Math.round(saving))}</span>` : ''}</div>
+          ${best.qty > 1 ? `<p class="muted">${best.qty}-pack, ${money(best.perUnit)} each</p>` : ''}
+          ${best.extras.length ? `<p class="muted">Includes ${best.extras.map((e) => `${e.qty > 1 ? `${e.qty}× ` : ''}${esc(shortName(e.name))}`).join(', ')}</p>` : ''}
+          ${best.inStock ? '' : '<p class="muted"><b>Out of stock online.</b></p>'}
+          ${best.url ? `<a class="store-btn" href="${esc(best.url)}" target="_blank" rel="noopener">View this deal on the store ↗</a>` : ''}
+        </div>` : '';
   app.innerHTML = `
     <div class="crumbs"><a href="#/">Home</a> › ${esc(shortName(d.name))}</div>
     <div class="item">
@@ -301,31 +312,34 @@ async function itemView(sku) {
       <div>
         <h1>${esc(shortName(d.name))}</h1>
         <p class="sub">${esc(d.name.split('|').slice(1).join(' · '))}</p>
+        ${bestBox}
         <div class="panel verdict v-${a.verdict}">
           <div class="label">${esc(a.label)}</div>
           <p><b>${esc(a.headline)}</b></p>
           ${a.reasons.length ? `<ul>${a.reasons.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
         </div>
-        <div class="panel">
-          <b>${d.ways.length} deal${d.ways.length === 1 ? '' : 's'} on this item, cheapest first</b>${d.unlisted ? ' <span class="muted">· not sold on its own</span>' : ''}
-          <ul class="ways">${d.ways.map((w) => wayRow(w, w === best, alone?.price)).join('')}</ul>
-        </div>
-        <div class="panel">
-          <b>Price history</b>
-          ${chart(d.history, d.trackingSince)}
-          ${s ? `<div class="stats">
-            <div class="stat"><div class="k">Now</div><div class="v">${money(best?.price)}</div></div>
-            <div class="stat"><div class="k">Lowest seen</div><div class="v">${money(s.low)}</div></div>
-            <div class="stat"><div class="k">Usual</div><div class="v">${money(s.typical)}</div></div>
-            <div class="stat"><div class="k">Highest</div><div class="v">${money(s.high)}</div></div>
-          </div>
-          <p class="muted">Tracked for ${s.trackedDays < 1 ? 'less than a day' : `${Math.round(s.trackedDays)} day${Math.round(s.trackedDays) === 1 ? '' : 's'}`} · ${s.episodes.length} sale period${s.episodes.length === 1 ? '' : 's'} seen · last checked ${ago(d.lastCheck)}</p>` : ''}
-        </div>
-        ${d.pastSales.length ? `<div class="panel"><b>Store sale collections it's tagged in</b><div class="chips">${d.pastSales.map((n) => `<span class="chip">${esc(n)}</span>`).join('')}</div></div>` : ''}
-        ${a.events?.length ? `<div class="panel"><b>Upcoming sale events</b><p class="muted">${a.events.map((e) => `${esc(e.name)}: ${fmtDate(e.date)} (${e.daysUntil} days)`).join(' · ')}</p></div>` : ''}
       </div>
     </div>
-    <section class="info" id="info"><p class="muted">Loading product details…</p></section>`;
+    <section class="info" id="info"><p class="muted">Loading product details…</p></section>
+    <div class="below">
+      <div class="panel">
+        <b>Price history</b>
+        ${chart(d.history, d.trackingSince)}
+        ${s ? `<div class="stats">
+          <div class="stat"><div class="k">Now</div><div class="v">${money(best?.price)}</div></div>
+          <div class="stat"><div class="k">Lowest seen</div><div class="v">${money(s.low)}</div></div>
+          <div class="stat"><div class="k">Usual</div><div class="v">${money(s.typical)}</div></div>
+          <div class="stat"><div class="k">Highest</div><div class="v">${money(s.high)}</div></div>
+        </div>
+        <p class="muted">Tracked for ${s.trackedDays < 1 ? 'less than a day' : `${Math.round(s.trackedDays)} day${Math.round(s.trackedDays) === 1 ? '' : 's'}`} · ${s.episodes.length} sale period${s.episodes.length === 1 ? '' : 's'} seen · last checked ${ago(d.lastCheck)}</p>` : ''}
+      </div>
+      ${others.length ? `<div class="panel">
+        <b>Other deals on this item (${others.length})</b>${d.unlisted ? ' <span class="muted">· not sold on its own</span>' : ''}
+        <ul class="ways">${others.map((w) => wayRow(w, false, alone?.price)).join('')}</ul>
+      </div>` : ''}
+      ${d.pastSales.length ? `<div class="panel"><b>Store sale collections it's tagged in</b><div class="chips">${d.pastSales.map((n) => `<span class="chip">${esc(n)}</span>`).join('')}</div></div>` : ''}
+      ${a.events?.length ? `<div class="panel"><b>Upcoming sale events</b><p class="muted">${a.events.map((e) => `${esc(e.name)}: ${fmtDate(e.date)} (${e.daysUntil} days)`).join(' · ')}</p></div>` : ''}
+    </div>`;
   bindGallery();
   // Photos, description and specs load separately so prices show straight away.
   let det = null;
