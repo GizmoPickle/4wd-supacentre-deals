@@ -205,7 +205,7 @@ async function searchView(params) {
   const r = await api(`search?q=${encodeURIComponent(q)}&sort=${sort}`);
   const steals = r.items.filter((i) => i.saving >= 1).length;
   app.innerHTML = `
-    <div class="crumbs"><a href="#/">Home</a> › Search</div>
+    <div class="crumbs"><a href="./">Home</a> › Search</div>
     <h1>“${esc(q)}”</h1>
     <div class="toolbar">
       <span class="count">${r.items.length} items${steals ? ` · <b>${steals}</b> with a saving` : ''}${r.source === 'local' && !STATIC ? ' · store search unavailable, matched locally' : ''}</span>
@@ -221,7 +221,7 @@ async function categoryView(id, params) {
   const r = await api(`category/${id}?sort=${sort}`);
   document.title = `${r.name} · Rig 4 Less`;
   app.innerHTML = `
-    <div class="crumbs"><a href="#/">Home</a>${r.trail.map((t) => ` › <a href="#/cat/${t.id}">${esc(t.name)}</a>`).join('')}</div>
+    <div class="crumbs"><a href="./">Home</a>${r.trail.map((t) => ` › <a href="#/cat/${t.id}">${esc(t.name)}</a>`).join('')}</div>
     <h1>${esc(r.name)}</h1>
     ${r.children.length ? `<div class="chips">${r.children.map((c) => `<a class="chip" href="#/cat/${c.id}">${esc(c.name)}</a>`).join('')}</div>` : ''}
     <div class="toolbar"><span class="count">${r.items.length} items</span>${sortControl(sort)}</div>
@@ -305,7 +305,7 @@ async function itemView(sku) {
           ${best.url ? `<a class="store-btn" href="${esc(best.url)}" target="_blank" rel="noopener">View this deal on the store ↗</a>` : ''}
         </div>` : '';
   app.innerHTML = `
-    <div class="crumbs"><a href="#/">Home</a> › ${esc(shortName(d.name))}</div>
+    <div class="crumbs"><a href="./">Home</a> › ${esc(shortName(d.name))}</div>
     <div class="item">
       <div>
         <div id="gallery" ${IMAGES ? '' : 'hidden'}>${gallery(d.image ? [d.image] : [], d.name)}</div>
@@ -425,7 +425,7 @@ const CONTACT = 'rig4less@gmail.com';
 function aboutView() {
   document.title = 'About & privacy · Rig 4 Less';
   app.innerHTML = `
-    <div class="crumbs"><a href="#/">Home</a> › About & privacy</div>
+    <div class="crumbs"><a href="./">Home</a> › About & privacy</div>
     <article class="about">
       <h1>About & privacy</h1>
       <p class="sub">Last updated 20 November 2026</p>
@@ -457,6 +457,8 @@ function aboutView() {
 
 // ---- router ----------------------------------------------------------------
 async function route() {
+  // Home is the plain address: tidy "/#/" (old links, or a hash cleared by hand).
+  if (!EMBEDDED && (location.hash === '#/' || location.hash === '#')) history.replaceState(null, '', location.pathname + location.search);
   const [path, query] = currentRoute().slice(1).split('?');
   $('#backBtn').hidden = !EMBEDDED || stack.length < 2;
   const params = new URLSearchParams(query);
@@ -474,7 +476,20 @@ async function route() {
   }
 }
 
-if (!EMBEDDED) window.addEventListener('hashchange', route);
+if (!EMBEDDED) {
+  window.addEventListener('hashchange', route);
+  // Home is the plain address (rig4less.lol), not "/#/". Back/forward to it has no hash to change.
+  window.addEventListener('popstate', () => { if (!location.hash) route(); });
+}
+// Home links: switch to the clean address without reloading the page.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href="./"]');
+  if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+  e.preventDefault();
+  if (EMBEDDED) return go('#/');
+  if (location.hash) history.pushState(null, '', location.pathname + location.search);
+  route();
+});
 refreshStatus();
 setInterval(refreshStatus, 20000);
 route();
