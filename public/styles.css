@@ -269,3 +269,13 @@ h2 { font: italic 800 22px/1.15 var(--font-cond); text-transform: uppercase; mar
 .v-text-new { color: var(--ink-3); }
 .low-seen { background: var(--amber-bg); border-radius: 4px; padding: 8px 10px; margin: 6px 0 4px !important; font-size: 14px; }
 .low-seen b { color: var(--amber); font-size: 16px; }
+
+/* --- about & privacy page --- */
+.about { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px 26px; max-width: 760px; }
+.about h2 { font-size: 20px; margin: 26px 0 8px; }
+.about p, .about li { color: var(--ink-2); max-width: 68ch; }
+.about p { margin: 0 0 12px; }
+.about ul { padding-left: 20px; margin: 0 0 12px; }
+.about li { margin-bottom: 8px; }
+.about a { color: var(--price); }
+.foot a.linkish { text-decoration: underline; }

@@ -420,6 +420,41 @@ function infoSections(det, storeUrl) {
   return out.join('');
 }
 
+// ---- about & privacy -------------------------------------------------------
+const CONTACT = 'rig4less@gmail.com';
+function aboutView() {
+  document.title = 'About & privacy · Rig 4 Less';
+  app.innerHTML = `
+    <div class="crumbs"><a href="#/">Home</a> › About & privacy</div>
+    <article class="about">
+      <h1>About & privacy</h1>
+      <p class="sub">Last updated 20 November 2026</p>
+
+      <h2>What Rig 4 Less is</h2>
+      <p>Rig 4 Less is an independent, unofficial price tracker for products sold by 4WD Supacentre. It finds the cheapest way to buy each item, whether that's on its own or as part of a combo deal, keeps a history of prices, and gives an opinion on whether to buy now or wait.</p>
+      <p><b>Rig 4 Less is not affiliated with, endorsed by or connected to 4WD Supacentre or Adventure Kings.</b> Product names, photos and descriptions belong to their owners and are shown only to identify the products. You can't buy anything here: every "View on store" link takes you to 4WD Supacentre's own website.</p>
+
+      <h2>Where the prices come from</h2>
+      <p>Prices, product details and photos are read from 4WD Supacentre's public online catalogue about every 6 hours. Price history starts on 19 November 2026, when tracking began, so "lowest price seen" means the lowest since then.</p>
+      <p>Prices can change between checks, and cart discounts, delivery costs, stock levels and promotions on the store may differ from what's shown here. <b>Always check the price on 4WD Supacentre's website before you buy.</b></p>
+
+      <h2>About the advice</h2>
+      <p>"Buy now", "Good deal", "Wait" and "Fair price" are opinions worked out automatically from tracked prices, the store's own sale labels and the usual Australian sale calendar. They're not financial advice or a promise that a price will go up or down. We aren't responsible for purchase decisions made using this site.</p>
+
+      <h2>Privacy</h2>
+      <p>Rig 4 Less doesn't collect personal information. There are no accounts, sign-ups, cookies, analytics or tracking, and nothing you search for is sent anywhere or stored: searching happens entirely in your browser.</p>
+      <p>Two other services are involved when you visit:</p>
+      <ul>
+        <li><b>GitHub Pages</b> hosts the site. Like any web host, GitHub keeps standard server logs, which include your IP address. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a>.</li>
+        <li><b>Product photos load directly from 4WD Supacentre's servers</b>, so their servers can see your IP address and that you came from this site. Following a link to their store is covered by their own privacy policy.</li>
+      </ul>
+      <p>If this ever changes, for example if we add analytics or email alerts, we'll update this page before it happens.</p>
+
+      <h2>Contact</h2>
+      <p>Questions, corrections, or a request to remove something, including from 4WD Supacentre: email <a href="mailto:${CONTACT}">${CONTACT}</a>. We'll respond as soon as we can.</p>
+    </article>`;
+}
+
 // ---- router ----------------------------------------------------------------
 async function route() {
   const [path, query] = currentRoute().slice(1).split('?');
@@ -431,6 +466,7 @@ async function route() {
     if (parts[0] === 'search') await searchView(params);
     else if (parts[0] === 'cat') await categoryView(Number(parts[1]), params);
     else if (parts[0] === 'item') await itemView(decodeURIComponent(parts.slice(1).join('/')));
+    else if (parts[0] === 'about') aboutView();
     else await homeView();
   } catch (e) {
     if (e.loading) return loadingView(e.status);
