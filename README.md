@@ -1,9 +1,9 @@
 # 4WD Deal Finder
 
 An unofficial reskin of the 4WD Supacentre catalogue that answers one question
-for every item: **what's the cheapest way to buy it?** The store often sells an
-item for less inside a bundle than on its own (on 19 Nov 2026, 239 items were
-like this, e.g. a 200W fixed solar panel at $179 alone vs $108.95 with brackets).
+for every item: **what's the cheapest deal on it, and should I buy now or wait?**
+The store's best price for an item is often hidden in a combo listing (on 19 Nov
+2026, a 200W fixed solar panel was $179 on its own and $108.95 with brackets).
 
 - **Menu and search like the store's.** Results are grouped by *item*. Each card
   shows the lowest price you can get it for, alone or in any bundle, and what

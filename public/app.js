@@ -1,5 +1,5 @@
 // Vanilla single-page app. Hash routes:
-//   #/                 home (bundle steals, price drops)
+//   #/                 home (biggest savings, price drops)
 //   #/search?q=…       search results, grouped by item, cheapest way first
 //   #/cat/<id>         category browse
 //   #/item/<sku>       every way to buy an item + price history + advice
@@ -86,7 +86,7 @@ function loadingView(s) {
   const pct = c?.total ? Math.round((c.done / c.total) * 100) : 4;
   app.innerHTML = `<div class="loading">
     <h1>Building the price catalogue</h1>
-    <p>Reading every product and bundle from the store. This takes a few minutes the first time.</p>
+    <p>Reading every product from the store. This takes a few minutes the first time.</p>
     <div class="bar"><i style="width:${pct}%"></i></div>
     <p class="muted">${c?.total ? `Page ${c.done} of ${c.total}` : 'Starting…'}</p>
     ${s?.lastError ? `<p class="muted">Last attempt failed: ${esc(s.lastError)}</p>` : ''}
@@ -147,12 +147,13 @@ $('#refreshBtn').onclick = async () => {
 // ---- cards -----------------------------------------------------------------
 function card(it) {
   const b = it.best;
-  const isBundle = b.kind === 'bundle';
-  const via = isBundle
-    ? `<div class="via">Cheapest in a bundle${b.qty > 1 ? ` (${b.qty}-pack, ${money(b.perUnit)} each)` : ''}${b.extras.length ? ` with <b>${esc(b.extras.map(shortName).join(' + '))}</b>` : ''}</div>`
-    : it.optionCount > 1 ? `<div class="via">Cheapest bought on its own · ${it.optionCount - 1} bundle${it.optionCount > 2 ? 's' : ''} compared</div>` : '';
+  const notes = [
+    b.qty > 1 ? `${b.qty}-pack, ${money(b.perUnit)} each` : '',
+    b.extras.length ? `Includes ${esc(b.extras.map(shortName).join(' + '))}` : '',
+  ].filter(Boolean);
+  const via = notes.length ? `<div class="via">${notes.join(' · ')}</div>` : '';
   return `<a class="card" href="#/item/${encodeURIComponent(it.sku)}">
-    ${it.saving >= 1 ? `<span class="badge-save">Save ${money(Math.round(it.saving))} in bundle</span>` : ''}
+    ${it.saving >= 1 ? `<span class="badge-save">Save ${money(Math.round(it.saving))}</span>` : ''}
     <div class="thumb">${IMAGES && it.image ? `<img loading="lazy" src="${esc(it.image)}?width=300&height=300&fit=bounds" alt="">` : ''}</div>
     <div class="body">
       <span class="pill v-${it.verdict}">${esc(it.verdictLabel)}</span>
@@ -160,7 +161,7 @@ function card(it) {
       ${via}
       <div class="price-row">
         <span class="price">${money(b.price)}</span>
-        ${it.saving >= 1 && it.alone ? `<span class="strike">${money(it.alone.price)} alone</span>` : ''}
+        ${it.saving >= 1 && it.alone ? `<span class="strike">${money(it.alone.price)}</span>` : ''}
       </div>
       ${b.inStock ? '' : '<div class="oos">Out of stock online</div>'}
     </div>
@@ -169,7 +170,7 @@ function card(it) {
 const grid = (items) => (items.length ? `<div class="grid">${items.map(card).join('')}</div>` : `<div class="empty">Nothing here yet.</div>`);
 
 function sortControl(current) {
-  const opts = [['saving', 'Biggest bundle saving'], ['price', 'Cheapest first'], ['relevance', 'Best match']];
+  const opts = [['saving', 'Biggest saving'], ['price', 'Cheapest first'], ['relevance', 'Best match']];
   return `<label class="count">Sort <select id="sort">${opts.map(([v, l]) => `<option value="${v}" ${v === current ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`;
 }
 function bindSort(base, params) {
@@ -185,13 +186,13 @@ async function homeView() {
   document.title = '4WD Deal Finder';
   app.innerHTML = `
     <section class="hero">
-      <div><div class="big">${h.stealCount.toLocaleString()}</div><p>items are cheaper inside a bundle than on their own right now</p></div>
-      <div style="flex:1;min-width:240px"><h1>Find the cheapest way to buy it</h1>
-      <p>Search or open the menu. Every result shows the lowest price for that item, whether it's sold alone or inside a combo deal, plus whether you should buy now or wait.</p></div>
+      <div><div class="big">${h.stealCount.toLocaleString()}</div><p>items have a deal below their regular price right now</p></div>
+      <div style="flex:1;min-width:240px"><h1>Find the cheapest deal</h1>
+      <p>Search or open the menu. Every result shows the cheapest deal on that item, how much it saves you, and whether to buy now or wait.</p></div>
     </section>
-    ${h.drops.length ? `<h2>Price drops since the last check</h2><p class="sub">Cheapest way to get these just got cheaper.</p>${grid(h.drops)}` : ''}
-    <h2>Bundle steals</h2>
-    <p class="sub">The bundle costs less than the item alone, so the extras are effectively free.</p>
+    ${h.drops.length ? `<h2>Price drops since the last check</h2><p class="sub">These just got cheaper.</p>${grid(h.drops)}` : ''}
+    <h2>Biggest savings</h2>
+    <p class="sub">The cheapest deals right now, measured against each item's regular price.</p>
     ${grid(h.steals)}`;
 }
 
@@ -207,7 +208,7 @@ async function searchView(params) {
     <div class="crumbs"><a href="#/">Home</a> › Search</div>
     <h1>“${esc(q)}”</h1>
     <div class="toolbar">
-      <span class="count">${r.items.length} items${steals ? ` · <b>${steals}</b> cheaper in a bundle` : ''}${r.source === 'local' && !STATIC ? ' · store search unavailable, matched locally' : ''}</span>
+      <span class="count">${r.items.length} items${steals ? ` · <b>${steals}</b> with a saving` : ''}${r.source === 'local' && !STATIC ? ' · store search unavailable, matched locally' : ''}</span>
       ${sortControl(sort)}
     </div>
     ${grid(r.items)}`;
@@ -230,8 +231,8 @@ async function categoryView(id, params) {
 
 function chart(history, trackingSince) {
   const series = [
-    { key: 'best', color: 'var(--red)', label: 'Cheapest way to get it', pts: history.best },
-    { key: 'alone', color: '#888', label: 'Bought on its own', pts: history.alone, dash: '5 4' },
+    { key: 'best', color: 'var(--red)', label: 'Cheapest deal', pts: history.best },
+    { key: 'alone', color: '#888', label: 'Regular price', pts: history.alone, dash: '5 4' },
   ].filter((s) => s.pts.length);
   if (!series.length) return '<p class="muted">No price history yet.</p>';
   const now = Date.now();
@@ -269,12 +270,12 @@ function wayRow(w, isBest, alonePrice) {
   return `<li class="way ${isBest ? 'best' : ''}">
     ${IMAGES && w.image ? `<img loading="lazy" src="${esc(w.image)}?width=128&height=128&fit=bounds" alt="">` : '<span></span>'}
     <div>
-      <div>${isBest ? '<span class="tag best">Cheapest</span>' : ''}<span class="tag ${w.kind === 'bundle' ? 'bundle' : ''}">${w.kind === 'bundle' ? (w.qty > 1 ? `${w.qty}-pack bundle` : 'Bundle') : 'On its own'}</span></div>
+      <div>${isBest ? '<span class="tag best">Cheapest</span>' : ''}${w.kind === 'alone' ? '<span class="tag">Regular price</span>' : ''}${w.qty > 1 ? `<span class="tag">${w.qty}-pack</span>` : ''}</div>
       <div class="w-name">${esc(shortName(w.name))}</div>
       <div class="w-meta">
-        ${w.extras.length ? `Also includes ${w.extras.map((e) => `${e.qty > 1 ? `${e.qty}× ` : ''}${esc(shortName(e.name))}${e.value ? ` (${money(e.value)})` : ''}`).join(', ')}. ` : ''}
+        ${w.extras.length ? `Includes ${w.extras.map((e) => `${e.qty > 1 ? `${e.qty}× ` : ''}${esc(shortName(e.name))}${e.value ? ` (${money(e.value)})` : ''}`).join(', ')}. ` : ''}
         ${w.qty > 1 ? `${money(w.perUnit)} per unit. ` : ''}
-        ${saving >= 1 ? `<b style="color:var(--green)">${money(saving)} less than buying it alone.</b> ` : ''}
+        ${saving >= 1 ? `<b style="color:var(--green)">Save ${money(saving)}.</b> ` : ''}
         ${w.inStock ? '' : '<b>Out of stock online.</b>'}
       </div>
     </div>
@@ -306,7 +307,7 @@ async function itemView(sku) {
           ${a.reasons.length ? `<ul>${a.reasons.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
         </div>
         <div class="panel">
-          <b>${d.ways.length} way${d.ways.length === 1 ? '' : 's'} to buy it</b>${d.unlisted ? ' <span class="muted">· not sold on its own</span>' : ''}
+          <b>${d.ways.length} deal${d.ways.length === 1 ? '' : 's'} on this item, cheapest first</b>${d.unlisted ? ' <span class="muted">· not sold on its own</span>' : ''}
           <ul class="ways">${d.ways.map((w) => wayRow(w, w === best, alone?.price)).join('')}</ul>
         </div>
         <div class="panel">
