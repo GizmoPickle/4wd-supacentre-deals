@@ -114,3 +114,10 @@ test('details: manuals and text helpers', () => {
   assert.deepEqual(parseManuals('<p><strong>Panel</strong></p><a href="https://m/x.pdf"><img src="i.png"></a>'), [{ label: 'Panel', url: 'https://m/x.pdf' }]);
   assert.equal(text('<p>a&nbsp;b</p><p> c </p>'), 'a b\nc');
 });
+
+test('cards get a one-line reason: a wait shows the lowest price seen and when', () => {
+  const h = historyOf([['2026-11-19T11:00:00Z', 228.95], ['2026-11-19T20:46:00Z', 288.9]]);
+  const a = adviseItem('PANEL', best(288.9), products, h, ctx(new Date('2026-11-20T00:00:00Z')));
+  assert.equal(a.verdict, 'wait');
+  assert.equal(a.short, 'Was $228.95 on 19 Nov');
+});

@@ -156,7 +156,7 @@ function card(it) {
     ${it.saving >= 1 ? `<span class="badge-save">Save ${money(Math.round(it.saving))}</span>` : ''}
     <div class="thumb">${IMAGES && it.image ? `<img loading="lazy" src="${esc(it.image)}?width=300&height=300&fit=bounds" alt="">` : ''}</div>
     <div class="body">
-      <span class="pill v-${it.verdict}">${esc(it.verdictLabel)}</span>
+      <div class="verdict-line"><span class="pill v-${it.verdict}">${esc(it.verdictLabel)}</span>${it.reason ? `<span class="reason v-text-${it.verdict}">${esc(it.reason)}</span>` : ''}</div>
       <div class="name">${esc(shortName(it.name))}</div>
       ${via}
       <div class="price-row">
@@ -298,6 +298,7 @@ async function itemView(sku) {
         <div class="panel best-box">
           <div class="k">Cheapest deal</div>
           <div class="price-row"><span class="price big-price">${money(best.price)}</span>${saving >= 1 ? `<span class="strike">${money(alone.price)}</span><span class="badge-save inline">Save ${money(Math.round(saving))}</span>` : ''}</div>
+          ${s && s.low < best.price - 0.5 ? `<p class="low-seen">Lowest price seen: <b>${money(s.low)}</b> on ${fmtDate(new Date(s.lowAt).toISOString())} <span class="muted">(${money(best.price - s.low)} less than now)</span></p>` : ''}
           ${best.qty > 1 ? `<p class="muted">${best.qty}-pack, ${money(best.perUnit)} each</p>` : ''}
           ${best.extras.length ? `<p class="muted">Includes ${best.extras.map((e) => `${e.qty > 1 ? `${e.qty}× ` : ''}${esc(shortName(e.name))}`).join(', ')}</p>` : ''}
           ${best.inStock ? '' : '<p class="muted"><b>Out of stock online.</b></p>'}
@@ -327,7 +328,7 @@ async function itemView(sku) {
         ${chart(d.history, d.trackingSince)}
         ${s ? `<div class="stats">
           <div class="stat"><div class="k">Now</div><div class="v">${money(best?.price)}</div></div>
-          <div class="stat"><div class="k">Lowest seen</div><div class="v">${money(s.low)}</div></div>
+          <div class="stat"><div class="k">Lowest since ${fmtDate(d.trackingSince).replace(/ \d{4}$/, '')}</div><div class="v">${money(s.low)}</div></div>
           <div class="stat"><div class="k">Usual</div><div class="v">${money(s.typical)}</div></div>
           <div class="stat"><div class="k">Highest</div><div class="v">${money(s.high)}</div></div>
         </div>

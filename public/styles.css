@@ -256,3 +256,13 @@ h2 { font: italic 800 22px/1.15 var(--font-cond); text-transform: uppercase; mar
 .store-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .below { margin-top: 16px; display: grid; gap: 0; }
 .static .badge-save.inline { margin: 0; }
+
+/* --- verdict reason on cards, lowest-seen line on item page --- */
+.verdict-line { display: flex; flex-direction: column; gap: 4px; }
+.reason { font-size: 12.5px; font-weight: 600; line-height: 1.3; }
+.v-text-wait { color: var(--amber); }
+.v-text-buy, .v-text-good { color: var(--green); }
+.v-text-fair { color: var(--blue); }
+.v-text-new { color: var(--ink-3); }
+.low-seen { background: var(--amber-bg); border-radius: 4px; padding: 8px 10px; margin: 6px 0 4px !important; font-size: 14px; }
+.low-seen b { color: var(--amber); font-size: 16px; }
