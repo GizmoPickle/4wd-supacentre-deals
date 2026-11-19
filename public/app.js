@@ -285,6 +285,7 @@ function wayRow(w, isBest, alonePrice) {
 
 async function itemView(sku) {
   app.innerHTML = `<div class="loading">Loading…</div>`;
+  const myRoute = currentRoute();
   const d = await api(`item/${encodeURIComponent(sku)}`);
   document.title = `${shortName(d.name)} · 4WD Deal Finder`;
   const a = d.advice;
@@ -295,8 +296,7 @@ async function itemView(sku) {
     <div class="crumbs"><a href="#/">Home</a> › ${esc(shortName(d.name))}</div>
     <div class="item">
       <div>
-        <div class="hero-img" ${IMAGES ? '' : 'hidden'}>${IMAGES && d.image ? `<img src="${esc(d.image)}?width=700&height=700&fit=bounds" alt="">` : ''}</div>
-        ${d.pastSales.length ? `<div class="panel" style="margin-top:16px"><b>Store sale collections it's tagged in</b><div class="chips">${d.pastSales.map((n) => `<span class="chip">${esc(n)}</span>`).join('')}</div></div>` : ''}
+        <div id="gallery" ${IMAGES ? '' : 'hidden'}>${gallery(d.image ? [d.image] : [], d.name)}</div>
       </div>
       <div>
         <h1>${esc(shortName(d.name))}</h1>
@@ -321,9 +321,88 @@ async function itemView(sku) {
           </div>
           <p class="muted">Tracked for ${s.trackedDays < 1 ? 'less than a day' : `${Math.round(s.trackedDays)} day${Math.round(s.trackedDays) === 1 ? '' : 's'}`} · ${s.episodes.length} sale period${s.episodes.length === 1 ? '' : 's'} seen · last checked ${ago(d.lastCheck)}</p>` : ''}
         </div>
+        ${d.pastSales.length ? `<div class="panel"><b>Store sale collections it's tagged in</b><div class="chips">${d.pastSales.map((n) => `<span class="chip">${esc(n)}</span>`).join('')}</div></div>` : ''}
         ${a.events?.length ? `<div class="panel"><b>Upcoming sale events</b><p class="muted">${a.events.map((e) => `${esc(e.name)}: ${fmtDate(e.date)} (${e.daysUntil} days)`).join(' · ')}</p></div>` : ''}
       </div>
-    </div>`;
+    </div>
+    <section class="info" id="info"><p class="muted">Loading product details…</p></section>`;
+  bindGallery();
+  // Photos, description and specs load separately so prices show straight away.
+  let det = null;
+  try { det = await api(`details/${encodeURIComponent(d.sku)}`); } catch { /* not fetched yet */ }
+  if (currentRoute() !== myRoute) return; // navigated away while loading
+  if (det?.images?.length && IMAGES) {
+    $('#gallery').innerHTML = gallery(det.images, d.name);
+    bindGallery();
+  }
+  $('#info').innerHTML = infoSections(det, d.url);
+}
+
+// ---- photo gallery ---------------------------------------------------------
+const img = (url, size) => `${esc(url)}?width=${size}&height=${size}&fit=bounds`;
+function gallery(images, name) {
+  if (!images.length) return '';
+  const many = images.length > 1;
+  return `<div class="gallery">
+      <div class="slides" id="slides" tabindex="0" aria-label="Photos of ${esc(shortName(name))}">
+        ${images.map((u, i) => `<img src="${img(u, 800)}" alt="Photo ${i + 1} of ${images.length}" ${i ? 'loading="lazy"' : ''}>`).join('')}
+      </div>
+      ${many ? `<button class="g-nav prev" data-step="-1" aria-label="Previous photo">‹</button>
+      <button class="g-nav next" data-step="1" aria-label="Next photo">›</button>
+      <span class="g-count" id="gCount">1 / ${images.length}</span>` : ''}
+    </div>
+    ${many ? `<div class="thumbs" id="thumbs">${images.map((u, i) => `<button data-i="${i}" class="${i ? '' : 'on'}" aria-label="Show photo ${i + 1}"><img src="${img(u, 160)}" alt="" loading="lazy"></button>`).join('')}</div>` : ''}`;
+}
+function bindGallery() {
+  const slides = $('#slides');
+  if (!slides) return;
+  const count = slides.children.length;
+  const index = () => Math.round(slides.scrollLeft / slides.clientWidth);
+  const show = (i) => slides.scrollTo({ left: Math.max(0, Math.min(count - 1, i)) * slides.clientWidth, behavior: 'smooth' });
+  slides.addEventListener('scroll', () => {
+    const i = index();
+    if ($('#gCount')) $('#gCount').textContent = `${i + 1} / ${count}`;
+    document.querySelectorAll('#thumbs button').forEach((b, j) => b.classList.toggle('on', j === i));
+  }, { passive: true });
+  document.querySelectorAll('.g-nav').forEach((b) => b.addEventListener('click', () => show(index() + Number(b.dataset.step))));
+  $('#thumbs')?.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(Number(b.dataset.i)); });
+  slides.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') show(index() + 1); if (e.key === 'ArrowLeft') show(index() - 1); });
+}
+
+// ---- product details, specs, FAQs (store's own content, as plain text) -----
+const paras = (lines) => lines.map((l) => `<p>${esc(l)}</p>`).join('');
+function fold(title, body, open = false) {
+  return `<details class="fold" ${open ? 'open' : ''}><summary>${esc(title)}</summary><div class="fold-body">${body}</div></details>`;
+}
+function infoSections(det, storeUrl) {
+  const out = [];
+  if (det) {
+    const { intro, sections } = det.description ?? { intro: [], sections: [] };
+    if (intro.length || sections.length) {
+      out.push(fold('Product details', `${paras(intro)}${sections.map((sec) => `
+        <div class="feature">
+          ${IMAGES && sec.image ? `<img src="${img(sec.image, 700)}" alt="" loading="lazy">` : ''}
+          <div><h3>${esc(sec.title)}</h3>${paras(sec.text)}</div>
+        </div>`).join('')}`, true));
+    }
+    if (det.specs?.length) {
+      out.push(fold('Specifications', `<div class="spec-wrap"><table class="specs">${det.specs.map(([k, v]) => v
+        ? `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`
+        : `<tr class="spec-group"><th colspan="2">${esc(k)}</th></tr>`).join('')}</table></div>`));
+    }
+    if (det.inTheBox?.length) out.push(fold("What's in the box", `<ul>${det.inTheBox.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`));
+    if (det.faqs?.length) {
+      out.push(fold('FAQs', det.faqs.map((f) => `<div class="faq"><h3>${esc(f.q)}</h3>${paras(f.a.split('\n'))}</div>`).join('')));
+    }
+    if (det.manuals?.length) {
+      out.push(fold('Manuals & downloads', `<ul>${det.manuals.map((m) => `<li><a href="${esc(m.url)}" target="_blank" rel="noopener">${esc(shortName(m.label))} (PDF) ↗</a></li>`).join('')}</ul>`));
+    }
+  }
+  if (storeUrl) {
+    out.push(fold('Ratings & reviews', `<p>Reviews are on the store's page for this item.</p><p><a class="buy-link" href="${esc(storeUrl)}" target="_blank" rel="noopener">Read reviews on the store ↗</a></p>`));
+  }
+  if (!det) out.unshift('<p class="muted">Photos and specs for this item are added at the next price check.</p>');
+  return out.join('');
 }
 
 // ---- router ----------------------------------------------------------------

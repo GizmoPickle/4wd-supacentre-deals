@@ -7,6 +7,7 @@ import { crawl } from './lib/crawl.js';
 import { readJson, emptyHistory } from './lib/db.js';
 import { gql, SEARCH_QUERY } from './lib/store.js';
 import { createApi } from './lib/api.js';
+import { readDetails } from './lib/details.js';
 
 const PORT = Number(process.env.PORT || 8790);
 const CRAWL_HOURS = Number(process.env.CRAWL_HOURS || 6);
@@ -21,6 +22,7 @@ const state = {
 };
 
 const api = createApi(state, {
+  loadDetails: async (sku) => readDetails(sku),
   rankSearch: async (q) => {
     const data = await gql(SEARCH_QUERY, { q, size: 120 }, { retries: 1, timeoutMs: 15000 });
     return data.products.items.map((i) => i.sku);

@@ -3,3 +3,4 @@ data/*.tmp
 dist-site/
 dist-static/
 node_modules/
+data/details/

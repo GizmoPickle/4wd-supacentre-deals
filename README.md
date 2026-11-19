@@ -8,7 +8,8 @@ The store's best price for an item is often hidden in a combo listing (on 19 Nov
 - **Menu and search like the store's.** Results are grouped by *item*. Each card
   shows the lowest price you can get it for, alone or in any bundle, and what
   the bundle throws in.
-- **Item page.** Every way to buy it, cheapest first, with links to the store.
+- **Item page.** All the product photos, product details, specifications, FAQs,
+  manuals and every deal on it (cheapest first), with links to the store.
 - **Price tracking.** Each check records every product's price and the cheapest
   way to get it, so you can see the lowest price seen, the usual price and past sales.
 - **Buy now or wait?** Advice based on that history, the store's own sale tags
@@ -63,6 +64,7 @@ bundle savings) and upcoming sale events.
 |---|---|
 | `lib/store.js` | Queries the store's public GraphQL API (the one its own site uses) |
 | `lib/crawl.js` | Reads every product, bundle and variant; saves `data/catalog.json`, appends `data/history.json` |
+| `lib/details.js` | Photos, description, specs, FAQs and manuals for each product, as plain text (`data/details/`) |
 | `lib/deals.js` | Ways-to-buy calculation, grouping results by item, history stats, buy/wait advice, sale calendar |
 | `lib/api.js` | The app's API, shared by the local server and the static site |
 | `server.js` | Local web server |

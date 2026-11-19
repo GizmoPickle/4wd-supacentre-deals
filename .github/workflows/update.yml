@@ -36,7 +36,7 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: Check prices
+      - name: Check prices and product details
         run: node crawl.js
 
       - name: Save price history

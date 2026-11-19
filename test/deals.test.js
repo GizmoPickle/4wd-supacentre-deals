@@ -87,3 +87,30 @@ test('browsing a category never shows other items from a combo pack', () => {
   const none = itemsFromProducts([products.B3], products, index, { categoryIds: new Set([99]) });
   assert.deepEqual(none, []);
 });
+
+import { parseSpecs, parseFaqs, parseDescription, parseManuals, text } from '../lib/details.js';
+
+test('details: spec table rows become name/value pairs', () => {
+  const html = '<style>td{}</style><table><tr><td><p>Output </p></td><td colspan="2"><p>200W</p></td></tr><tr><td>Weight</td><td>12.5kg</td></tr></table>';
+  assert.deepEqual(parseSpecs(html), [['Output', '200W'], ['Weight', '12.5kg']]);
+  assert.deepEqual(parseSpecs('NA'), []);
+});
+
+test('details: FAQs pair questions with answers', () => {
+  const html = '<table><tr class="FAQ_Q"><td><strong>Q. Can it start a car?</strong></td></tr><tr class="FAQ_A"><td><p>Not recommended.</p><p>Emergencies only.</p></td></tr></table>';
+  assert.deepEqual(parseFaqs(html), [{ q: 'Can it start a car?', a: 'Not recommended.\nEmergencies only.' }]);
+});
+
+test('details: description keeps one copy of each section, drops commented placeholders', () => {
+  const block = '<p class="dec_title">BUILT TO LAST</p><!-- <p class="dec_title_small">4.3L / Minute</p> --><p>Thick glass &amp; alloy frame.</p>';
+  const html = `&lt;img src="https://x/a.jpg"&gt;${block.replace(/</g, '&lt;').replace(/>/g, '&gt;')}`;
+  const d = parseDescription(`<div>${html}${block}</div>`);
+  assert.equal(d.sections.length, 1);
+  assert.deepEqual(d.sections[0].text, ['Thick glass & alloy frame.']);
+  assert.equal(d.sections[0].image, 'https://x/a.jpg');
+});
+
+test('details: manuals and text helpers', () => {
+  assert.deepEqual(parseManuals('<p><strong>Panel</strong></p><a href="https://m/x.pdf"><img src="i.png"></a>'), [{ label: 'Panel', url: 'https://m/x.pdf' }]);
+  assert.equal(text('<p>a&nbsp;b</p><p> c </p>'), 'a b\nc');
+});
