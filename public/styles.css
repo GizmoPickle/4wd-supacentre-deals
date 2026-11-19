@@ -49,10 +49,11 @@ img { max-width: 100%; display: block; }
 .menu-btn { background: none; border: 0; color: #fff; display: flex; align-items: center; gap: 8px; padding: 6px 4px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 13px; }
 .burger { display: grid; gap: 4px; }
 .burger i { display: block; width: 22px; height: 2.5px; background: #fff; border-radius: 2px; }
-.brand { display: inline-flex; align-items: center; text-decoration: none; line-height: 0; }
+.brand { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; text-decoration: none; line-height: 0; }
+.tagline { font: 600 11.5px/1.2 var(--font); color: #fff; opacity: .92; letter-spacing: .02em; padding-left: 4px; white-space: nowrap; }
 .brand img { height: 50px; width: auto; filter: drop-shadow(2px 2px 0 rgba(0,0,0,.2)); }
 .brand:focus-visible { outline: 3px solid #fff; outline-offset: 4px; border-radius: 4px; }
-@media (max-width: 640px) { .brand img { height: 42px; } }
+@media (max-width: 640px) { .brand img { height: 40px; } .tagline { font-size: 10.5px; } }
 .search { flex: 1; display: flex; max-width: 640px; margin-left: auto; background: #fff; border-radius: 4px; overflow: hidden; }
 .search input { -webkit-appearance: none; appearance: none; border-radius: 0; flex: 1; border: 0; color: #1b1b1b; background: #fff; padding: 10px 12px; font: inherit; min-width: 0; outline: none; }
 .search button { border: 0; background: var(--night); color: #fff; padding: 0 14px; display: grid; place-items: center; }

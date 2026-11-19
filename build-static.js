@@ -60,7 +60,7 @@ if (EMBEDDED) {
 ${body.trim()}
 `;
 } else {
-  const desc = 'Find the cheapest way to buy any 4WD Supacentre item, on its own or inside a bundle, with price history and buy-now-or-wait advice.';
+  const desc = 'Find the cheapest deals on 4WD Supacentre: the lowest price on every item, price history, and whether to buy now or wait.';
   page = page.replace('<title>Rig 4 Less</title>', `<title>Rig 4 Less</title>
   <meta name="description" content="${desc}">
   <meta property="og:title" content="Rig 4 Less">
