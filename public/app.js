@@ -72,7 +72,7 @@ async function refreshStatus() {
   $('#footStatus').textContent = EMBEDDED
     ? `Snapshot of ${status.products.toLocaleString()} products taken ${fmtDate(status.updatedAt)}. Prices don't update on this page.`
     : status.static
-    ? `Prices last checked ${ago(status.updatedAt)} · ${status.products.toLocaleString()} products · checked every 6 hours · tracking since ${fmtDate(status.trackingSince)}`
+    ? `Prices last checked ${ago(status.updatedAt)} · ${status.products.toLocaleString()} products · checked several times a day · tracking since ${fmtDate(status.trackingSince)}`
     : status.updatedAt
     ? `Prices last checked ${ago(status.updatedAt)} · ${status.products.toLocaleString()} products · tracking since ${fmtDate(status.trackingSince)} (${status.checks} checks)`
     : '';
@@ -428,14 +428,14 @@ function aboutView() {
     <div class="crumbs"><a href="./">Home</a> › About & privacy</div>
     <article class="about">
       <h1>About & privacy</h1>
-      <p class="sub">Last updated 20 November 2026</p>
+      <p class="sub">Last updated 23 November 2026</p>
 
       <h2>What Rig 4 Less is</h2>
       <p>Rig 4 Less is an independent, unofficial price tracker for products sold by 4WD Supacentre. It finds the cheapest way to buy each item, whether that's on its own or as part of a combo deal, keeps a history of prices, and gives an opinion on whether to buy now or wait.</p>
       <p><b>Rig 4 Less is not affiliated with, endorsed by or connected to 4WD Supacentre or Adventure Kings.</b> Product names, photos and descriptions belong to their owners and are shown only to identify the products. You can't buy anything here: every "View on store" link takes you to 4WD Supacentre's own website.</p>
 
       <h2>Where the prices come from</h2>
-      <p>Prices, product details and photos are read from 4WD Supacentre's public online catalogue about every 6 hours. Price history starts on 19 November 2026, when tracking began, so "lowest price seen" means the lowest since then.</p>
+      <p>Prices, product details and photos are read from 4WD Supacentre's public online catalogue several times a day. Price history starts on 19 November 2026, when tracking began, so "lowest price seen" means the lowest since then.</p>
       <p>Prices can change between checks, and cart discounts, delivery costs, stock levels and promotions on the store may differ from what's shown here. <b>Always check the price on 4WD Supacentre's website before you buy.</b></p>
 
       <h2>About the advice</h2>
@@ -447,7 +447,7 @@ function aboutView() {
       <ul>
         <li><b>GitHub Pages</b> hosts the site. Like any web host, GitHub keeps standard server logs, which include your IP address. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a>.</li>
         <li><b>Product photos load directly from 4WD Supacentre's servers</b>, so their servers can see your IP address and that you came from this site. Following a link to their store is covered by their own privacy policy.</li>
-        <li><b>Cloudflare Web Analytics</b> counts visits so we can see how many people use the site and which pages they view. It doesn't use cookies or follow you across websites, and we only see totals such as page views, referring sites and countries. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</li>
+        <li><b>Cloudflare Web Analytics</b> counts visits so we can see how many people use the site. It doesn't use cookies or follow you across websites, and we only see totals such as page views, referring sites and countries. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</li>
       </ul>
       <p>If this ever changes, for example if we add email alerts, we'll update this page before it happens.</p>
 

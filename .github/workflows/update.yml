@@ -1,11 +1,13 @@
-# Checks prices every 6 hours, saves the price history to the repo, and
+# Checks prices several times a day, saves the price history to the repo, and
 # publishes the site to GitHub Pages. Also runs on every push to main and can be
 # run by hand (Actions tab → "Update prices and publish" → Run workflow).
 name: Update prices and publish
 
 on:
   schedule:
-    - cron: '17 */6 * * *'
+    # Every 3 hours: GitHub runs scheduled jobs on a best-effort basis and often
+    # skips some, so this keeps real updates roughly every 6 hours or better.
+    - cron: '17 */3 * * *'
   push:
     branches: [main]
   workflow_dispatch:

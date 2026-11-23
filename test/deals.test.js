@@ -121,3 +121,9 @@ test('cards get a one-line reason: a wait shows the lowest price seen and when',
   assert.equal(a.verdict, 'wait');
   assert.equal(a.short, 'Was $228.95 on 19 Nov');
 });
+
+test('advice: no "Wait" for a trivial difference (under 5% or $5)', () => {
+  const h = historyOf([['2026-11-19T11:00:00Z', 138.95], ['2026-11-21T11:00:00Z', 139.95]]);
+  const a = adviseItem('PANEL', best(139.95), products, h, ctx(new Date('2026-11-23T00:00:00Z')));
+  assert.doesNotMatch(a.short ?? '', /^Was /); // a $1 dip is no reason to wait
+});

@@ -21,7 +21,7 @@ The store's best price for an item is often hidden in a combo listing (on 19 Nov
 ## The public site
 
 The site is plain static files hosted on GitHub Pages. There's no server.
-`.github/workflows/update.yml` runs every 6 hours (and on every push to `main`):
+`.github/workflows/update.yml` is scheduled every 3 hours (GitHub skips some scheduled runs, so expect updates several times a day) and runs on every push to `main`:
 
 1. reads the whole catalogue from the store (~5,000 products, about 2 minutes),
 2. commits the updated price history (`data/history.json`) to the repo,
