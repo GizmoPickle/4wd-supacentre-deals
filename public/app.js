@@ -442,13 +442,14 @@ function aboutView() {
       <p>"Buy now", "Good deal", "Wait" and "Fair price" are opinions worked out automatically from tracked prices, the store's own sale labels and the usual Australian sale calendar. They're not financial advice or a promise that a price will go up or down. We aren't responsible for purchase decisions made using this site.</p>
 
       <h2>Privacy</h2>
-      <p>Rig 4 Less doesn't collect personal information. There are no accounts, sign-ups, cookies, analytics or tracking, and nothing you search for is sent anywhere or stored: searching happens entirely in your browser.</p>
-      <p>Two other services are involved when you visit:</p>
+      <p>Rig 4 Less doesn't collect personal information. There are no accounts, sign-ups or cookies, and nothing you search for is sent anywhere or stored: searching happens entirely in your browser. We count visits using privacy-friendly analytics that don't track individual visitors.</p>
+      <p>Three other services are involved when you visit:</p>
       <ul>
         <li><b>GitHub Pages</b> hosts the site. Like any web host, GitHub keeps standard server logs, which include your IP address. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a>.</li>
         <li><b>Product photos load directly from 4WD Supacentre's servers</b>, so their servers can see your IP address and that you came from this site. Following a link to their store is covered by their own privacy policy.</li>
+        <li><b>Cloudflare Web Analytics</b> counts visits so we can see how many people use the site and which pages they view. It doesn't use cookies or follow you across websites, and we only see totals such as page views, referring sites and countries. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</li>
       </ul>
-      <p>If this ever changes, for example if we add analytics or email alerts, we'll update this page before it happens.</p>
+      <p>If this ever changes, for example if we add email alerts, we'll update this page before it happens.</p>
 
       <h2>Contact</h2>
       <p>Questions, corrections, or a request to remove something, including from 4WD Supacentre: email <a href="mailto:${CONTACT}">${CONTACT}</a>. We'll respond as soon as we can.</p>

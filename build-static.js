@@ -66,6 +66,9 @@ ${body.trim()}
   <meta property="og:title" content="Rig 4 Less">
   <meta property="og:description" content="${desc}">
   <meta name="theme-color" content="#d7000e">`);
+  // Cloudflare Web Analytics (cookie-free visit counts). Public site only.
+  page = page.replace('</body>', `  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8ce570ba6a50499f85c2ae54c454e8c5"}'></script><!-- End Cloudflare Web Analytics -->
+</body>`);
   fs.writeFileSync(path.join(OUT, '.nojekyll'), ''); // serve files as-is on GitHub Pages
 }
 fs.writeFileSync(path.join(OUT, 'index.html'), page);
