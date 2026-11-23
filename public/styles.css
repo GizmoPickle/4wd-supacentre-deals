@@ -279,3 +279,9 @@ h2 { font: italic 800 22px/1.15 var(--font-cond); text-transform: uppercase; mar
 .about li { margin-bottom: 8px; }
 .about a { color: var(--price); }
 .foot a.linkish { text-decoration: underline; }
+
+/* Description blocks: subheading, and image-only blocks (e.g. dimensions diagrams) */
+.feature-sub { font-weight: 700; color: var(--ink) !important; margin-top: -2px !important; text-transform: uppercase; font-size: 13px; letter-spacing: .03em; }
+.feature-images { grid-template-columns: 1fr; }
+.feature-images > div { order: -1; }
+.feature-images img { max-width: 560px; justify-self: start; }

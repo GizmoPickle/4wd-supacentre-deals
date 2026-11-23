@@ -395,9 +395,9 @@ function infoSections(det, storeUrl) {
     const { intro, sections } = det.description ?? { intro: [], sections: [] };
     if (intro.length || sections.length) {
       out.push(fold('Product details', `${paras(intro)}${sections.map((sec) => `
-        <div class="feature">
-          ${IMAGES && sec.image ? `<img src="${img(sec.image, 700)}" alt="" loading="lazy">` : ''}
-          <div><h3>${esc(sec.title)}</h3>${paras(sec.text)}</div>
+        <div class="feature ${sec.text.length ? '' : 'feature-images'}">
+          ${IMAGES ? (sec.images ?? (sec.image ? [sec.image] : [])).map((u) => `<img src="${img(u, 900)}" alt="" loading="lazy">`).join('') : ''}
+          <div><h3>${esc(sec.title)}</h3>${sec.subtitle ? `<p class="feature-sub">${esc(sec.subtitle)}</p>` : ''}${paras(sec.text)}</div>
         </div>`).join('')}`, true));
     }
     if (det.specs?.length) {
