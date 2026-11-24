@@ -1879,7 +1879,7 @@
        "id": 4323,
        "name": "Universal Storage Bag",
        "path": "camping/canvas-storage-bags/kings-universal-storage-bag",
-       "position": 19,
+       "position": 20,
        "inMenu": true,
        "children": []
       },
@@ -1887,7 +1887,7 @@
        "id": 7349,
        "name": "Gas Stove Canvas Bag",
        "path": "camping/canvas-storage-bags/gas-stove-canvas-bag",
-       "position": 21,
+       "position": 22,
        "inMenu": true,
        "children": []
       },
@@ -1895,7 +1895,7 @@
        "id": 3703,
        "name": "45L Tough Storage Box",
        "path": "camping/canvas-storage-bags/45l-tough-storage-box",
-       "position": 22,
+       "position": 23,
        "inMenu": true,
        "children": []
       },
@@ -1903,7 +1903,7 @@
        "id": 3706,
        "name": "78L Tough Storage Box",
        "path": "camping/canvas-storage-bags/78l-tough-storage-box",
-       "position": 23,
+       "position": 24,
        "inMenu": true,
        "children": []
       },
@@ -1911,7 +1911,7 @@
        "id": 3709,
        "name": "156L Tough Storage Box",
        "path": "camping/canvas-storage-bags/156l-tough-storage-box",
-       "position": 24,
+       "position": 25,
        "inMenu": true,
        "children": []
       }
