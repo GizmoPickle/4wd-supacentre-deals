@@ -20,7 +20,7 @@
      "children": [
       {
        "id": 8870,
-       "name": "Over 50% Off Batteries",
+       "name": "Up To 54% Off 12V Power Deals",
        "path": "specials/black-friday-deals/batteries",
        "position": 1,
        "inMenu": true,
@@ -28,7 +28,7 @@
       },
       {
        "id": 8867,
-       "name": "Over 50% Off LED Lights",
+       "name": "Up To 54% Off LED Light Deals",
        "path": "specials/black-friday-deals/driving-lights",
        "position": 2,
        "inMenu": true,
@@ -36,7 +36,7 @@
       },
       {
        "id": 8858,
-       "name": "Over 50% Off 4WD Rear Drawers",
+       "name": "Up To 58% Off Drawer Deals",
        "path": "specials/black-friday-deals/drawers",
        "position": 3,
        "inMenu": true,
@@ -44,7 +44,7 @@
       },
       {
        "id": 9251,
-       "name": "Over 50% Off Solar & Power",
+       "name": "Up To 51% Off Solar Deals",
        "path": "specials/black-friday-deals/bf-solar",
        "position": 4,
        "inMenu": true,
@@ -52,7 +52,7 @@
       },
       {
        "id": 9254,
-       "name": "Over 50% Off Fridges",
+       "name": "Up To 58% Off Fridge Deals",
        "path": "specials/black-friday-deals/bf-fridges",
        "position": 5,
        "inMenu": true,
