@@ -20,7 +20,7 @@
      "children": [
       {
        "id": 8870,
-       "name": "Over 40% Off Batteries",
+       "name": "Over 50% Off Batteries",
        "path": "specials/black-friday-deals/batteries",
        "position": 1,
        "inMenu": true,
@@ -28,7 +28,7 @@
       },
       {
        "id": 8867,
-       "name": "Over 40% Off LED Lights",
+       "name": "Over 50% Off LED Lights",
        "path": "specials/black-friday-deals/driving-lights",
        "position": 2,
        "inMenu": true,
@@ -44,7 +44,7 @@
       },
       {
        "id": 9251,
-       "name": "Over 40% Off Solar & Power",
+       "name": "Over 50% Off Solar & Power",
        "path": "specials/black-friday-deals/bf-solar",
        "position": 4,
        "inMenu": true,
@@ -52,7 +52,7 @@
       },
       {
        "id": 9254,
-       "name": "Over 50% Off Escape Fridge / Freezers",
+       "name": "Over 50% Off Fridges",
        "path": "specials/black-friday-deals/bf-fridges",
        "position": 5,
        "inMenu": true,
@@ -2341,6 +2341,14 @@
        "name": "Active Living Hampers",
        "path": "camping/active-living/active-living-hampers",
        "position": 14,
+       "inMenu": true,
+       "children": []
+      },
+      {
+       "id": 9263,
+       "name": "Cooler Bag",
+       "path": "camping/active-living/cooler-bags",
+       "position": 15,
        "inMenu": true,
        "children": []
       }
